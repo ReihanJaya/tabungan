@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabungan Reihan Jaya</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(16,185,129,.14), transparent 32%),
+        radial-gradient(ellipse at 92% 12%, rgba(99,102,241,.18), transparent 30%),
+        #080f1e;
+    }
+    .glass { background: rgba(18, 29, 49, .82); border: 1px solid rgba(148,163,184,.14); box-shadow: 0 18px 50px rgba(0,0,0,.12); backdrop-filter: blur(16px); }
+    .stat-card { transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease; }
+    .stat-card:hover { transform: translateY(-4px); border-color: rgba(52,211,153,.38); box-shadow: 0 15px 35px rgba(0,0,0,.2); }
+    .field { width:100%; background:#0b1425; border:1px solid #29364c; border-radius:13px; padding:11px 13px; color:#e2e8f0; font-size:13px; outline:none; transition:border-color .2s, box-shadow .2s; }
+    .field:focus { border-color:#818cf8; box-shadow:0 0 0 3px rgba(129,140,248,.12); }
+    .primary-btn { background:linear-gradient(135deg,#6366f1,#8b5cf6); box-shadow:0 8px 22px rgba(99,102,241,.22); transition:transform .2s, filter .2s; }
+    .primary-btn:hover { filter:brightness(1.1); transform:translateY(-1px); }
+    .eyebrow { letter-spacing:.12em; }
+    .table-row:hover { background:rgba(148,163,184,.055); }
+    @media (max-width: 640px) { .mobile-scroll { overflow-x:auto; } }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen pb-12">
+  <header class="sticky top-0 z-50 border-b border-white/5 bg-[#080f1e]/85 backdrop-blur-xl">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-11 h-11 shrink-0 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 text-white flex items-center justify-center text-xl shadow-lg shadow-emerald-500/20">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="font-extrabold text-base sm:text-lg text-white leading-tight truncate">Pocket & Savings</h1>
+          <p class="text-xs text-slate-400 mt-1">Rencanakan uang, wujudkan perjalanan ✈️</p>
+        </div>
+      </div>
+      <button onclick="resetAllData()" class="shrink-0 text-xs font-semibold text-rose-300 border border-rose-400/20 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition">
+        <i class="fa-solid fa-rotate-left mr-1"></i><span class="hidden sm:inline">Reset Data</span><span class="sm:hidden">Reset</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 mt-7">
+    <section class="mb-7 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+      <div>
+        <p class="eyebrow text-[10px] font-bold uppercase text-emerald-300 mb-2">PERSONAL MONEY TRACKER</p>
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Halo, pejuang <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-indigo-300">tabungan!</span></h2>
+        <p class="text-sm text-slate-400 mt-2">Catat setiap pemasukan dan pengeluaran biar rencana jalan-jalan makin dekat.</p>
+      </div>
+      <div class="text-xs text-slate-400 glass rounded-xl px-3 py-2 self-start sm:self-auto">
+        <i class="fa-regular fa-calendar text-indigo-300 mr-2"></i><span id="todayLabel"></span>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div class="glass stat-card rounded-2xl p-5 relative overflow-hidden">
+        <div class="absolute -right-5 -top-6 w-24 h-24 rounded-full bg-emerald-400/10 blur-xl"></div>
+        <div class="flex items-center justify-between mb-4"><p class="text-xs font-semibold text-slate-400">Total Sisa Saldo</p><span class="w-9 h-9 rounded-xl bg-emerald-400/10 text-emerald-300 flex items-center justify-center"><i class="fa-solid fa-wallet"></i></span></div>
+        <p id="totalBalance" class="text-2xl font-extrabold text-emerald-300 tracking-tight">Rp 0</p>
+        <p class="text-[11px] text-slate-500 mt-2">Uang yang masih tersedia</p>
+      </div>
+      <div class="glass stat-card rounded-2xl p-5 relative overflow-hidden">
+        <div class="absolute -right-5 -top-6 w-24 h-24 rounded-full bg-sky-400/10 blur-xl"></div>
+        <div class="flex items-center justify-between mb-4"><p class="text-xs font-semibold text-slate-400">Total Pemasukan</p><span class="w-9 h-9 rounded-xl bg-sky-400/10 text-sky-300 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-up"></i></span></div>
+        <p id="totalIncome" class="text-2xl font-extrabold text-sky-300 tracking-tight">Rp 0</p>
+        <p class="text-[11px] text-slate-500 mt-2">Semua uang yang masuk</p>
+      </div>
+      <div class="glass stat-card rounded-2xl p-5 relative overflow-hidden">
+        <div class="absolute -right-5 -top-6 w-24 h-24 rounded-full bg-rose-400/10 blur-xl"></div>
+        <div class="flex items-center justify-between mb-4"><p class="text-xs font-semibold text-slate-400">Total Pengeluaran</p><span class="w-9 h-9 rounded-xl bg-rose-400/10 text-rose-300 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-down"></i></span></div>
+        <p id="totalExpense" class="text-2xl font-extrabold text-rose-300 tracking-tight">Rp 0</p>
+        <p class="text-[11px] text-slate-500 mt-2">Uang yang sudah digunakan</p>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div class="lg:col-span-3 space-y-6">
+        <section class="glass rounded-2xl p-5 sm:p-6">
+          <div class="flex items-center justify-between gap-3 mb-5">
+            <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-indigo-400/10 text-indigo-300 flex items-center justify-center"><i class="fa-solid fa-bullseye text-lg"></i></span><div><h3 class="font-bold text-white">Target Tabungan</h3><p class="text-xs text-slate-400 mt-1">Sedikit demi sedikit, lama-lama tercapai.</p></div></div>
+            <button onclick="editSavingsGoal()" class="text-xs font-semibold text-indigo-300 hover:text-indigo-200 whitespace-nowrap"><i class="fa-solid fa-pen mr-1"></i>Atur Target</button>
+          </div>
+          <div class="flex justify-between items-end gap-3 mb-3"><span id="goalTitle" class="text-sm font-semibold text-slate-200">Jalan-jalan / Konser</span><span id="goalProgressText" class="text-xs text-slate-400 text-right">Rp 0 / Rp 1.500.000</span></div>
+          <div class="w-full bg-slate-700/70 rounded-full h-3 overflow-hidden"><div id="goalProgressBar" class="bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-400 h-3 rounded-full transition-all duration-700" style="width:0%"></div></div>
+          <div class="flex justify-between mt-2"><span class="text-[11px] text-slate-500">Terus semangat menabung!</span><span id="goalPercentage" class="text-xs font-bold text-indigo-300">0% terkumpul</span></div>
+        </section>
+
+        <section class="glass rounded-2xl p-5 sm:p-6">
+          <div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-rose-400/10 text-rose-300 flex items-center justify-center"><i class="fa-solid fa-chart-pie text-lg"></i></span><div><h3 class="font-bold text-white">Pengeluaran per Kategori</h3><p class="text-xs text-slate-400 mt-1">Lihat uang paling banyak dipakai untuk apa.</p></div></div>
+          <div class="h-60 flex justify-center items-center"><canvas id="expenseChart"></canvas></div>
+        </section>
+
+        <section class="glass rounded-2xl p-5 sm:p-6">
+          <div class="flex items-center justify-between gap-3 mb-4"><div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-slate-400/10 text-slate-300 flex items-center justify-center"><i class="fa-solid fa-clock-rotate-left text-lg"></i></span><div><h3 class="font-bold text-white">Riwayat Transaksi</h3><p class="text-xs text-slate-400 mt-1">Semua catatan uangmu ada di sini.</p></div></div><span id="transactionCount" class="text-[11px] bg-slate-700/70 text-slate-300 px-2.5 py-1 rounded-full">0 transaksi</span></div>
+          <div class="mobile-scroll">
+            <table class="w-full text-left text-sm text-slate-300 min-w-[470px]">
+              <thead class="text-[10px] text-slate-500 uppercase tracking-wider border-b border-slate-700/70"><tr><th class="py-3 px-2">Keterangan</th><th class="py-3 px-2">Kategori</th><th class="py-3 px-2">Nominal</th><th class="py-3 px-2 text-right">Aksi</th></tr></thead>
+              <tbody id="transactionList" class="divide-y divide-slate-700/40"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div class="lg:col-span-2">
+        <section class="glass rounded-2xl p-5 sm:p-6 lg:sticky lg:top-24">
+          <div class="flex items-center gap-3 mb-5"><span class="w-10 h-10 rounded-xl bg-emerald-400/10 text-emerald-300 flex items-center justify-center"><i class="fa-solid fa-circle-plus text-lg"></i></span><div><h3 class="font-bold text-white">Catat Transaksi</h3><p class="text-xs text-slate-400 mt-1">Input uang dengan lebih jelas.</p></div></div>
+          <form id="transactionForm" onsubmit="addTransaction(event)" class="space-y-4">
+            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Tipe Transaksi</label><select id="type" onchange="updateCategories()" class="field"><option value="expense">Pengeluaran (-)</option><option value="income">Pemasukan (+)</option><option value="saving">Alokasi ke Tabungan (🎯)</option></select></div>
+            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Kategori</label><select id="category" class="field"></select></div>
+            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Nominal (Rupiah)</label><div class="relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-emerald-300">Rp</span><input type="text" id="amount" inputmode="numeric" autocomplete="off" required placeholder="25.000" class="field pl-10 font-bold tracking-wide" aria-describedby="amountHint"></div><p id="amountHint" class="text-[10px] text-slate-500 mt-2"><i class="fa-solid fa-circle-info mr-1 text-indigo-300"></i>Otomatis memakai titik pemisah ribuan, contoh: 1.500.000</p></div>
+            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Catatan / Deskripsi</label><input type="text" id="description" required maxlength="100" placeholder="Contoh: Tiket kereta, makan, uang saku..." class="field"></div>
+            <button type="submit" class="primary-btn w-full text-white font-bold py-3 rounded-xl transition text-sm"><i class="fa-solid fa-floppy-disk mr-2"></i>Simpan Transaksi</button>
+          </form>
+          <div class="mt-5 rounded-xl border border-indigo-400/15 bg-indigo-400/5 p-3 flex gap-3"><i class="fa-solid fa-lightbulb text-amber-300 mt-0.5"></i><p class="text-[11px] leading-relaxed text-slate-400">Tips: catat transaksi setiap selesai menggunakan uang supaya saldo dan target tabungan tetap akurat.</p></div>
+        </section>
+      </div>
+    </div>
+    <p class="text-center text-[10px] text-slate-600 mt-8">Pocket & Savings Tracker · Data tersimpan di browser perangkat ini</p>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'moneyTrackerState';
+    let state;
+    try {
+      state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+        transactions: [], goal: { title: "Jalan-jalan / Konser", target: 1500000, current: 0 }
+      };
+    } catch {
+      state = { transactions: [], goal: { title: "Jalan-jalan / Konser", target: 1500000, current: 0 } };
+    }
+    if (!state.goal) state.goal = { title: "Jalan-jalan / Konser", target: 1500000, current: 0 };
+    if (!Array.isArray(state.transactions)) state.transactions = [];
+    let chartInstance = null;
+
+    const categoriesMap = {
+      expense: ['Makan & Minum', 'Transport', 'Nongkrong', 'Belanja', 'Hiburan', 'Akomodasi', 'Lainnya'],
+      income: ['Uang Saku', 'Gaji', 'Bonus', 'Freelance', 'Transfer', 'Lainnya'],
+      saving: ['Tabungan Impian']
+    };
+
+    function formatRupiah(number) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(number) || 0);
+    }
+    // Input menampilkan pemisah ribuan Indonesia (titik), tetapi nilai yang disimpan tetap angka.
+    function formatThousands(value) {
+      const digits = String(value ?? '').replace(/\D/g, '');
+      return digits ? digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '';
+    }
+    function parseAmount(value) {
+      return Number(String(value ?? '').replace(/\D/g, '')) || 0;
+    }
+    const amountInput = document.getElementById('amount');
+    amountInput.addEventListener('input', function () {
+      const oldPosition = this.selectionStart;
+      const oldValue = this.value;
+      const digitsBeforeCursor = oldValue.slice(0, oldPosition).replace(/\D/g, '').length;
+      this.value = formatThousands(oldValue);
+      let pos = 0, digitsSeen = 0;
+      while (pos < this.value.length && digitsSeen < digitsBeforeCursor) {
+        if (/\d/.test(this.value[pos])) digitsSeen++;
+        pos++;
+      }
+      this.setSelectionRange(pos, pos);
+    });
+
+    function updateCategories() {
+      const type = document.getElementById('type').value;
+      const select = document.getElementById('category');
+      select.innerHTML = '';
+      categoriesMap[type].forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        select.appendChild(option);
+      });
+    }
+
+    function addTransaction(e) {
+      e.preventDefault();
+      const type = document.getElementById('type').value;
+      const category = document.getElementById('category').value;
+      const amount = parseAmount(amountInput.value);
+      const description = document.getElementById('description').value.trim();
+      if (!amount || amount < 1) {
+        alert('Masukkan nominal lebih dari Rp 0 ya.');
+        amountInput.focus();
+        return;
+      }
+      if (!description) {
+        alert('Isi catatan transaksi terlebih dahulu.');
+        document.getElementById('description').focus();
+        return;
+      }
+      const newTx = {
+        id: Date.now(), type, category, amount, description,
+        date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })
+      };
+      state.transactions.unshift(newTx);
+      if (type === 'saving') state.goal.current = (Number(state.goal.current) || 0) + amount;
+      saveAndRender();
+      document.getElementById('transactionForm').reset();
+      updateCategories();
+      amountInput.focus();
+    }
+
+    function deleteTransaction(id) {
+      const tx = state.transactions.find(t => t.id === id);
+      if (!tx) return;
+      if (!confirm(`Hapus transaksi "${tx.description}" sebesar ${formatRupiah(tx.amount)}?`)) return;
+      if (tx.type === 'saving') state.goal.current = Math.max(0, (Number(state.goal.current) || 0) - tx.amount);
+      state.transactions = state.transactions.filter(t => t.id !== id);
+      saveAndRender();
+    }
+
+    function editSavingsGoal() {
+      const newTitle = prompt('Masukkan nama target tabungan:', state.goal.title);
+      if (newTitle === null) return;
+      const targetText = prompt('Masukkan jumlah target (contoh: 1500000):', state.goal.target);
+      if (targetText === null) return;
+      const newTarget = parseAmount(targetText);
+      if (newTitle.trim() && newTarget > 0) {
+        state.goal.title = newTitle.trim();
+        state.goal.target = newTarget;
+        saveAndRender();
+      } else {
+        alert('Nama target tidak boleh kosong dan nominal target harus lebih dari Rp 0.');
+      }
+    }
+
+    function resetAllData() {
+      if (!confirm('Yakin ingin menghapus semua transaksi dan mengembalikan target tabungan ke awal? Data ini tidak bisa dikembalikan.')) return;
+      state = { transactions: [], goal: { title: "Jalan-jalan / Konser", target: 1500000, current: 0 } };
+      saveAndRender();
+    }
+
+    function saveAndRender() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderUI();
+    }
+
+    function renderUI() {
+      let income = 0, expense = 0, saving = 0;
+      const categoryExpenseMap = {};
+      state.transactions.forEach(t => {
+        const amount = Number(t.amount) || 0;
+        if (t.type === 'income') income += amount;
+        if (t.type === 'expense') {
+          expense += amount;
+          categoryExpenseMap[t.category] = (categoryExpenseMap[t.category] || 0) + amount;
+        }
+        if (t.type === 'saving') saving += amount;
+      });
+      const balance = income - expense - saving;
+      document.getElementById('totalBalance').textContent = formatRupiah(balance);
+      document.getElementById('totalIncome').textContent = formatRupiah(income);
+      document.getElementById('totalExpense').textContent = formatRupiah(expense);
+
+      const goalCurrent = Number(state.goal.current) || 0;
+      const goalTarget = Number(state.goal.target) || 1;
+      document.getElementById('goalTitle').textContent = state.goal.title;
+      document.getElementById('goalProgressText').textContent = `${formatRupiah(goalCurrent)} / ${formatRupiah(goalTarget)}`;
+      const progress = Math.min(100, Math.round((goalCurrent / goalTarget) * 100)) || 0;
+      document.getElementById('goalProgressBar').style.width = `${progress}%`;
+      document.getElementById('goalPercentage').textContent = `${progress}% terkumpul`;
+
+      const txList = document.getElementById('transactionList');
+      txList.innerHTML = '';
+      document.getElementById('transactionCount').textContent = `${state.transactions.length} transaksi`;
+      if (!state.transactions.length) {
+        txList.innerHTML = '<tr><td colspan="4" class="text-center py-10 text-slate-500"><div class="text-2xl mb-2"><i class="fa-regular fa-folder-open"></i></div><p class="text-xs">Belum ada transaksi.</p><p class="text-[11px] mt-1">Catat transaksi pertamamu di form sebelah.</p></td></tr>';
+      } else {
+        state.transactions.forEach(t => {
+          const isIncome = t.type === 'income';
+          const isSaving = t.type === 'saving';
+          const color = isIncome ? 'text-sky-300' : isSaving ? 'text-indigo-300' : 'text-rose-300';
+          const prefix = isIncome ? '+' : '-';
+          const icon = isIncome ? 'fa-arrow-down' : isSaving ? 'fa-bullseye' : 'fa-arrow-up';
+          const row = document.createElement('tr');
+          row.className = 'table-row transition';
+          const descCell = document.createElement('td');
+          descCell.className = 'py-3 px-2';
+          const desc = document.createElement('div');
+          desc.className = 'font-semibold text-slate-200 text-xs';
+          desc.textContent = t.description;
+          const date = document.createElement('div');
+          date.className = 'text-[10px] text-slate-500 mt-1';
+          date.textContent = t.date || '';
+          descCell.append(desc, date);
+          const catCell = document.createElement('td');
+          catCell.className = 'py-3 px-2';
+          const cat = document.createElement('span');
+          cat.className = 'inline-block bg-slate-700/60 text-slate-300 px-2 py-1 rounded-lg text-[10px] whitespace-nowrap';
+          cat.textContent = t.category;
+          catCell.appendChild(cat);
+          const amountCell = document.createElement('td');
+          amountCell.className = `py-3 px-2 font-bold text-xs whitespace-nowrap ${color}`;
+          amountCell.textContent = `${prefix}${formatRupiah(t.amount)}`;
+          const actionCell = document.createElement('td');
+          actionCell.className = 'py-3 px-2 text-right';
+          const del = document.createElement('button');
+          del.className = 'w-8 h-8 rounded-lg text-slate-500 hover:text-rose-300 hover:bg-rose-400/10 transition';
+          del.title = 'Hapus transaksi';
+          del.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+          del.onclick = () => deleteTransaction(t.id);
+          actionCell.appendChild(del);
+          row.append(descCell, catCell, amountCell, actionCell);
+          txList.appendChild(row);
+        });
+      }
+      renderChart(categoryExpenseMap);
+    }
+
+    function renderChart(expenseData) {
+      const ctx = document.getElementById('expenseChart').getContext('2d');
+      const labels = Object.keys(expenseData);
+      const values = Object.values(expenseData);
+      const hasExpenses = labels.length > 0;
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: hasExpenses ? labels : ['Belum ada pengeluaran'],
+          datasets: [{
+            data: hasExpenses ? values : [1],
+            backgroundColor: hasExpenses ? ['#fb7185','#38bdf8','#34d399','#fbbf24','#a78bfa','#f97316','#64748b'] : ['#334155'],
+            borderColor: '#121d31',
+            borderWidth: 4,
+            hoverOffset: 7
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '68%',
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#a8b5c8', padding: 18, usePointStyle: true, pointStyle: 'circle', font: { family: 'Plus Jakarta Sans', size: 10 } } },
+            tooltip: { callbacks: { label: context => ` ${context.label}: ${formatRupiah(context.raw)}` } }
+          }
+        }
+      });
+    }
+
+    document.getElementById('todayLabel').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    updateCategories();
+    renderUI();
+  </script>
+</body>
+</html>
