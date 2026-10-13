@@ -82,14 +82,45 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
       <div class="lg:col-span-3 space-y-6">
+        <!-- Target Tabungan 1 Card dengan Pilihan Pos -->
         <section class="glass rounded-2xl p-5 sm:p-6">
-          <div class="flex items-center justify-between gap-3 mb-5">
-            <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-indigo-400/10 text-indigo-300 flex items-center justify-center"><i class="fa-solid fa-bullseye text-lg"></i></span><div><h3 class="font-bold text-white">Target Tabungan</h3><p class="text-xs text-slate-400 mt-1">Sedikit demi sedikit, lama-lama tercapai.</p></div></div>
-            <button onclick="editSavingsGoal()" class="text-xs font-semibold text-indigo-300 hover:text-indigo-200 whitespace-nowrap"><i class="fa-solid fa-pen mr-1"></i>Atur Target</button>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-indigo-400/10 text-indigo-300 flex items-center justify-center">
+                <i class="fa-solid fa-bullseye text-lg"></i>
+              </span>
+              <div>
+                <h3 class="font-bold text-white">Target Tabungan</h3>
+                <p class="text-xs text-slate-400 mt-1">Pilih pos tabungan untuk melihat progres.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="dashboardGoalSelect" onchange="switchDashboardGoal()" class="field !py-1.5 !px-3 text-xs font-semibold !w-auto bg-slate-800 border-indigo-500/30 text-indigo-200">
+              </select>
+              <button onclick="addNewGoal()" class="text-xs font-semibold bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border border-indigo-500/30 px-3 py-2 rounded-xl transition whitespace-nowrap" title="Tambah Pos Baru">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
           </div>
-          <div class="flex justify-between items-end gap-3 mb-3"><span id="goalTitle" class="text-sm font-semibold text-slate-200">Jalan-jalan / Konser</span><span id="goalProgressText" class="text-xs text-slate-400 text-right">Rp 0 / Rp 1.500.000</span></div>
-          <div class="w-full bg-slate-700/70 rounded-full h-3 overflow-hidden"><div id="goalProgressBar" class="bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-400 h-3 rounded-full transition-all duration-700" style="width:0%"></div></div>
-          <div class="flex justify-between mt-2"><span class="text-[11px] text-slate-500">Terus semangat menabung!</span><span id="goalPercentage" class="text-xs font-bold text-indigo-300">0% terkumpul</span></div>
+
+          <!-- Tampilan Single Card Progres -->
+          <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 space-y-3">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <span id="activeGoalTitle" class="font-bold text-white text-sm">Pilih Pos</span>
+                <button onclick="editCurrentGoal()" class="text-xs text-slate-400 hover:text-indigo-300" title="Edit Pos Ini"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteCurrentGoal()" class="text-xs text-slate-400 hover:text-rose-400" title="Hapus Pos Ini"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+              <span id="activeGoalProgressText" class="text-xs text-slate-300 font-semibold">Rp 0 / Rp 0</span>
+            </div>
+            <div class="w-full bg-slate-700/70 rounded-full h-3 overflow-hidden">
+              <div id="activeGoalProgressBar" class="bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-400 h-3 rounded-full transition-all duration-700" style="width:0%"></div>
+            </div>
+            <div class="flex justify-between items-center text-[11px]">
+              <span class="text-slate-500">Menabung & ambil dana sesuai pos!</span>
+              <span id="activeGoalPercentage" class="font-bold text-indigo-300">0% terkumpul</span>
+            </div>
+          </div>
         </section>
 
         <section class="glass rounded-2xl p-5 sm:p-6">
@@ -101,7 +132,7 @@
           <div class="flex items-center justify-between gap-3 mb-4"><div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-slate-400/10 text-slate-300 flex items-center justify-center"><i class="fa-solid fa-clock-rotate-left text-lg"></i></span><div><h3 class="font-bold text-white">Riwayat Transaksi</h3><p class="text-xs text-slate-400 mt-1">Semua catatan uangmu ada di sini.</p></div></div><span id="transactionCount" class="text-[11px] bg-slate-700/70 text-slate-300 px-2.5 py-1 rounded-full">0 transaksi</span></div>
           <div class="mobile-scroll">
             <table class="w-full text-left text-sm text-slate-300 min-w-[520px]">
-              <thead class="text-[10px] text-slate-500 uppercase tracking-wider border-b border-slate-700/70"><tr><th class="py-3 px-2">Keterangan</th><th class="py-3 px-2">Kategori</th><th class="py-3 px-2">Bank / Dompet</th><th class="py-3 px-2">Nominal</th><th class="py-3 px-2 text-right">Aksi</th></tr></thead>
+              <thead class="text-[10px] text-slate-500 uppercase tracking-wider border-b border-slate-700/70"><tr><th class="py-3 px-2">Keterangan</th><th class="py-3 px-2">Kategori / Tipe</th><th class="py-3 px-2">Bank / Dompet</th><th class="py-3 px-2">Nominal</th><th class="py-3 px-2 text-right">Aksi</th></tr></thead>
               <tbody id="transactionList" class="divide-y divide-slate-700/40"></tbody>
             </table>
           </div>
@@ -115,24 +146,35 @@
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-2">Tipe Transaksi</label>
               <select id="type" onchange="updateCategories()" class="field">
-                <option value="expense">Pengeluaran (-)</option>
                 <option value="income">Pemasukan (+)</option>
-                <option value="saving">Alokasi ke Tabungan (🎯)</option>
+                <option value="expense">Pengeluaran (-)</option>
+                <option value="save_to_goal">Alokasi Tabungan (+)</option>
+                <option value="withdraw_from_goal">Pengambilan Tabungan (-)</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-2">Kategori</label>
               <select id="category" class="field"></select>
             </div>
+            
+            <!-- Dynamic Pos Target Selector -->
+            <div id="targetGoalWrapper" class="hidden">
+              <label class="block text-xs font-semibold text-indigo-300 mb-2"><i class="fa-solid fa-bullseye mr-1"></i>Pilih Pos Target Tabungan</label>
+              <select id="targetGoalId" class="field border-indigo-500/40"></select>
+            </div>
+
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-2">Bank / Dompet Digital</label>
               <select id="bank" class="field">
                 <option value="BCA">BCA</option>
-                 <option value="JAGO">JAGO</option>
-                  <option value="BCA">BCA</option>
-                   <option value="Wonder BNI">Wonder BNI</option>
-                
-                <option value="Cash / Tunai">Cash </option>
+                <option value="Mandiri">Mandiri</option>
+                <option value="BNI">BNI</option>
+                <option value="BRI">BRI</option>
+                <option value="SeaBank">SeaBank</option>
+                <option value="GoPay">GoPay</option>
+                <option value="Dana">Dana</option>
+                <option value="OVO">OVO</option>
+                <option value="Cash / Tunai">Cash / Tunai</option>
                 <option value="Lainnya">Lainnya</option>
               </select>
             </div>
@@ -143,11 +185,11 @@
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-2">Catatan / Deskripsi</label>
-              <input type="text" id="description" required maxlength="100" placeholder="Contoh: Tiket kereta, makan, uang saku..." class="field">
+              <input type="text" id="description" required maxlength="100" placeholder="Contoh: Nabung mingguan, Ambil buat bayar tiket, dll." class="field">
             </div>
             <button type="submit" class="primary-btn w-full text-white font-bold py-3 rounded-xl transition text-sm"><i class="fa-solid fa-floppy-disk mr-2"></i>Simpan Transaksi</button>
           </form>
-          <div class="mt-5 rounded-xl border border-indigo-400/15 bg-indigo-400/5 p-3 flex gap-3"><i class="fa-solid fa-lightbulb text-amber-300 mt-0.5"></i><p class="text-[11px] leading-relaxed text-slate-400">Tips: catat transaksi setiap selesai menggunakan uang supaya saldo dan target tabungan tetap akurat.</p></div>
+          <div class="mt-5 rounded-xl border border-indigo-400/15 bg-indigo-400/5 p-3 flex gap-3"><i class="fa-solid fa-lightbulb text-amber-300 mt-0.5"></i><p class="text-[11px] leading-relaxed text-slate-400">Tips: Pilih <strong>Alokasi Tabungan</strong> untuk menambah saldo pos, atau <strong>Pengambilan Tabungan</strong> jika uang tabungannya dipakai.</p></div>
         </section>
       </div>
     </div>
@@ -155,23 +197,34 @@
   </main>
 
   <script>
-    const STORAGE_KEY = 'moneyTrackerState';
+    const STORAGE_KEY = 'moneyTrackerState_v4';
     let state;
+    
+    const defaultGoals = [
+      { id: 'goal-1', title: 'Buat Healing', target: 1500000 },
+      { id: 'goal-2', title: 'Beli Kado', target: 500000 },
+      { id: 'goal-3', title: 'Lain-lain', target: 1000000 }
+    ];
+
     try {
       state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
-        transactions: [], goal: { title: "Jalan-jalan / Konser", target: 1500000, current: 0 }
+        transactions: [],
+        goals: defaultGoals,
+        activeDashboardGoalId: 'goal-1'
       };
     } catch {
-      state = { transactions: [], goal: { title: "Jalan-jalan / Konser", target: 1500000, current: 0 } };
+      state = { transactions: [], goals: defaultGoals, activeDashboardGoalId: 'goal-1' };
     }
-    if (!state.goal) state.goal = { title: "Jalan-jalan / Konser", target: 1500000, current: 0 };
+    if (!Array.isArray(state.goals) || state.goals.length === 0) state.goals = defaultGoals;
     if (!Array.isArray(state.transactions)) state.transactions = [];
+    if (!state.activeDashboardGoalId) state.activeDashboardGoalId = state.goals[0].id;
     let chartInstance = null;
 
     const categoriesMap = {
-      expense: ['Makan & Minum', 'Transport', 'Nongkrong', 'Belanja', 'Hiburan', 'Akomodasi', 'Lainnya'],
       income: ['Uang Saku', 'Gaji', 'Bonus', 'Freelance', 'Transfer', 'Lainnya'],
-      saving: ['Tabungan Impian']
+      expense: ['Makan & Minum', 'Transport', 'Nongkrong', 'Belanja', 'Hiburan', 'Akomodasi', 'Lainnya'],
+      save_to_goal: ['Setor Tabungan'],
+      withdraw_from_goal: ['Ambil Tabungan']
     };
 
     function formatRupiah(number) {
@@ -211,6 +264,99 @@
         option.textContent = cat;
         select.appendChild(option);
       });
+      toggleGoalSelect();
+    }
+
+    function toggleGoalSelect() {
+      const type = document.getElementById('type').value;
+      const wrapper = document.getElementById('targetGoalWrapper');
+      
+      if (type === 'save_to_goal' || type === 'withdraw_from_goal') {
+        wrapper.classList.remove('hidden');
+        populateGoalDropdowns();
+      } else {
+        wrapper.classList.add('hidden');
+      }
+    }
+
+    function populateGoalDropdowns() {
+      const txSelect = document.getElementById('targetGoalId');
+      txSelect.innerHTML = '';
+      state.goals.forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g.id;
+        opt.textContent = `${g.title} (Target: ${formatRupiah(g.target)})`;
+        txSelect.appendChild(opt);
+      });
+
+      const dashSelect = document.getElementById('dashboardGoalSelect');
+      dashSelect.innerHTML = '';
+      state.goals.forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g.id;
+        opt.textContent = g.title;
+        if (g.id === state.activeDashboardGoalId) opt.selected = true;
+        dashSelect.appendChild(opt);
+      });
+    }
+
+    function switchDashboardGoal() {
+      const select = document.getElementById('dashboardGoalSelect');
+      state.activeDashboardGoalId = select.value;
+      saveAndRender();
+    }
+
+    function addNewGoal() {
+      const title = prompt('Masukkan nama pos target baru (contoh: Beli Kado, Healing, dll):');
+      if (!title || !title.trim()) return;
+      const targetStr = prompt('Masukkan target nominal (contoh: 500000):');
+      if (!targetStr) return;
+      const target = parseAmount(targetStr);
+      if (target <= 0) {
+        alert('Nominal target harus lebih besar dari Rp 0');
+        return;
+      }
+
+      const newGoal = {
+        id: 'goal-' + Date.now(),
+        title: title.trim(),
+        target: target
+      };
+      state.goals.push(newGoal);
+      state.activeDashboardGoalId = newGoal.id;
+      saveAndRender();
+    }
+
+    function editCurrentGoal() {
+      const goal = state.goals.find(g => g.id === state.activeDashboardGoalId);
+      if (!goal) return;
+      
+      const newTitle = prompt('Ubah nama pos target:', goal.title);
+      if (newTitle === null) return;
+      const newTargetStr = prompt('Ubah target nominal:', goal.target);
+      if (newTargetStr === null) return;
+
+      const newTarget = parseAmount(newTargetStr);
+      if (newTitle.trim() && newTarget > 0) {
+        goal.title = newTitle.trim();
+        goal.target = newTarget;
+        saveAndRender();
+      } else {
+        alert('Input tidak valid.');
+      }
+    }
+
+    function deleteCurrentGoal() {
+      if (state.goals.length <= 1) {
+        alert('Minimal harus ada 1 pos target tabungan.');
+        return;
+      }
+      const goal = state.goals.find(g => g.id === state.activeDashboardGoalId);
+      if (!confirm(`Hapus pos target "${goal.title}"? Transaksi terkait pos ini tidak akan terhapus.`)) return;
+      
+      state.goals = state.goals.filter(g => g.id !== state.activeDashboardGoalId);
+      state.activeDashboardGoalId = state.goals[0].id;
+      saveAndRender();
     }
 
     function addTransaction(e) {
@@ -220,7 +366,12 @@
       const bank = document.getElementById('bank').value;
       const amount = parseAmount(amountInput.value);
       const description = document.getElementById('description').value.trim();
-      
+      let targetGoalId = null;
+
+      if (type === 'save_to_goal' || type === 'withdraw_from_goal') {
+        targetGoalId = document.getElementById('targetGoalId').value;
+      }
+
       if (!amount || amount < 1) {
         alert('Masukkan nominal lebih dari Rp 0 ya.');
         amountInput.focus();
@@ -231,14 +382,13 @@
         document.getElementById('description').focus();
         return;
       }
-      
+
       const newTx = {
-        id: Date.now(), type, category, bank, amount, description,
+        id: Date.now(), type, category, bank, amount, description, targetGoalId,
         date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })
       };
-      
+
       state.transactions.unshift(newTx);
-      if (type === 'saving') state.goal.current = (Number(state.goal.current) || 0) + amount;
       saveAndRender();
       document.getElementById('transactionForm').reset();
       updateCategories();
@@ -249,29 +399,13 @@
       const tx = state.transactions.find(t => t.id === id);
       if (!tx) return;
       if (!confirm(`Hapus transaksi "${tx.description}" sebesar ${formatRupiah(tx.amount)}?`)) return;
-      if (tx.type === 'saving') state.goal.current = Math.max(0, (Number(state.goal.current) || 0) - tx.amount);
       state.transactions = state.transactions.filter(t => t.id !== id);
       saveAndRender();
     }
 
-    function editSavingsGoal() {
-      const newTitle = prompt('Masukkan nama target tabungan:', state.goal.title);
-      if (newTitle === null) return;
-      const targetText = prompt('Masukkan jumlah target (contoh: 1500000):', state.goal.target);
-      if (targetText === null) return;
-      const newTarget = parseAmount(targetText);
-      if (newTitle.trim() && newTarget > 0) {
-        state.goal.title = newTitle.trim();
-        state.goal.target = newTarget;
-        saveAndRender();
-      } else {
-        alert('Nama target tidak boleh kosong dan nominal target harus lebih dari Rp 0.');
-      }
-    }
-
     function resetAllData() {
-      if (!confirm('Yakin ingin menghapus semua transaksi dan mengembalikan target tabungan ke awal? Data ini tidak bisa dikembalikan.')) return;
-      state = { transactions: [], goal: { title: "Jalan-jalan / Konser", target: 1500000, current: 0 } };
+      if (!confirm('Yakin ingin menghapus semua data? Semua pos & transaksi akan dikembalikan ke awal.')) return;
+      state = { transactions: [], goals: defaultGoals, activeDashboardGoalId: 'goal-1' };
       saveAndRender();
     }
 
@@ -281,86 +415,98 @@
     }
 
     function renderUI() {
-      let income = 0, expense = 0, saving = 0;
+      let income = 0, expense = 0;
       const categoryExpenseMap = {};
-      
+      const goalSavingsMap = {};
+
+      state.goals.forEach(g => goalSavingsMap[g.id] = 0);
+
       state.transactions.forEach(t => {
         const amount = Number(t.amount) || 0;
-        if (t.type === 'income') income += amount;
+        if (t.type === 'income') {
+          income += amount;
+        }
         if (t.type === 'expense') {
           expense += amount;
           categoryExpenseMap[t.category] = (categoryExpenseMap[t.category] || 0) + amount;
         }
-        if (t.type === 'saving') saving += amount;
+        if (t.type === 'save_to_goal' && t.targetGoalId) {
+          goalSavingsMap[t.targetGoalId] = (goalSavingsMap[t.targetGoalId] || 0) + amount;
+        }
+        if (t.type === 'withdraw_from_goal' && t.targetGoalId) {
+          goalSavingsMap[t.targetGoalId] = Math.max(0, (goalSavingsMap[t.targetGoalId] || 0) - amount);
+        }
       });
 
-      const balance = income - expense - saving;
+      const balance = income - expense;
       document.getElementById('totalBalance').textContent = formatRupiah(balance);
       document.getElementById('totalIncome').textContent = formatRupiah(income);
       document.getElementById('totalExpense').textContent = formatRupiah(expense);
 
-      const goalCurrent = Number(state.goal.current) || 0;
-      const goalTarget = Number(state.goal.target) || 1;
-      document.getElementById('goalTitle').textContent = state.goal.title;
-      document.getElementById('goalProgressText').textContent = `${formatRupiah(goalCurrent)} / ${formatRupiah(goalTarget)}`;
-      const progress = Math.min(100, Math.round((goalCurrent / goalTarget) * 100)) || 0;
-      document.getElementById('goalProgressBar').style.width = `${progress}%`;
-      document.getElementById('goalPercentage').textContent = `${progress}% terkumpul`;
+      populateGoalDropdowns();
+
+      const activeGoal = state.goals.find(g => g.id === state.activeDashboardGoalId) || state.goals[0];
+      if (activeGoal) {
+        state.activeDashboardGoalId = activeGoal.id;
+        const currentAmount = goalSavingsMap[activeGoal.id] || 0;
+        const progress = Math.min(100, Math.round((currentAmount / activeGoal.target) * 100)) || 0;
+
+        document.getElementById('activeGoalTitle').textContent = activeGoal.title;
+        document.getElementById('activeGoalProgressText').textContent = `${formatRupiah(currentAmount)} / ${formatRupiah(activeGoal.target)}`;
+        document.getElementById('activeGoalProgressBar').style.width = `${progress}%`;
+        document.getElementById('activeGoalPercentage').textContent = `${progress}% terkumpul`;
+      }
 
       const txList = document.getElementById('transactionList');
       txList.innerHTML = '';
       document.getElementById('transactionCount').textContent = `${state.transactions.length} transaksi`;
-      
+
       if (!state.transactions.length) {
         txList.innerHTML = '<tr><td colspan="5" class="text-center py-10 text-slate-500"><div class="text-2xl mb-2"><i class="fa-regular fa-folder-open"></i></div><p class="text-xs">Belum ada transaksi.</p><p class="text-[11px] mt-1">Catat transaksi pertamamu di form sebelah.</p></td></tr>';
       } else {
         state.transactions.forEach(t => {
-          const isIncome = t.type === 'income';
-          const isSaving = t.type === 'saving';
-          const color = isIncome ? 'text-sky-300' : isSaving ? 'text-indigo-300' : 'text-rose-300';
-          const prefix = isIncome ? '+' : '-';
+          const isIncome = t.type === 'income' || t.type === 'save_to_goal';
+          const color = (t.type === 'income' || t.type === 'save_to_goal') ? 'text-sky-300' : 'text-rose-300';
+          const prefix = (t.type === 'income' || t.type === 'save_to_goal') ? '+' : '-';
           
           const row = document.createElement('tr');
           row.className = 'table-row transition';
-          
-          const descCell = document.createElement('td');
-          descCell.className = 'py-3 px-2';
-          const desc = document.createElement('div');
-          desc.className = 'font-semibold text-slate-200 text-xs';
-          desc.textContent = t.description;
-          const date = document.createElement('div');
-          date.className = 'text-[10px] text-slate-500 mt-1';
-          date.textContent = t.date || '';
-          descCell.append(desc, date);
-          
-          const catCell = document.createElement('td');
-          catCell.className = 'py-3 px-2';
-          const cat = document.createElement('span');
-          cat.className = 'inline-block bg-slate-700/60 text-slate-300 px-2 py-1 rounded-lg text-[10px] whitespace-nowrap';
-          cat.textContent = t.category;
-          catCell.appendChild(cat);
 
-          const bankCell = document.createElement('td');
-          bankCell.className = 'py-3 px-2';
-          const bankBadge = document.createElement('span');
-          bankBadge.className = 'inline-block bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-2 py-0.5 rounded-md text-[10px] whitespace-nowrap font-medium';
-          bankBadge.textContent = t.bank || 'Cash / Tunai';
-          bankCell.appendChild(bankBadge);
+          let categoryBadge = t.category;
+          let badgeClass = 'inline-block bg-slate-700/60 text-slate-300 px-2 py-1 rounded-lg text-[10px] whitespace-nowrap';
 
-          const amountCell = document.createElement('td');
-          amountCell.className = `py-3 px-2 font-bold text-xs whitespace-nowrap ${color}`;
-          amountCell.textContent = `${prefix}${formatRupiah(t.amount)}`;
-          
-          const actionCell = document.createElement('td');
-          actionCell.className = 'py-3 px-2 text-right';
-          const del = document.createElement('button');
-          del.className = 'w-8 h-8 rounded-lg text-slate-500 hover:text-rose-300 hover:bg-rose-400/10 transition';
-          del.title = 'Hapus transaksi';
-          del.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-          del.onclick = () => deleteTransaction(t.id);
-          actionCell.appendChild(del);
-          
-          row.append(descCell, catCell, bankCell, amountCell, actionCell);
+          if (t.type === 'save_to_goal' && t.targetGoalId) {
+            const targetGoal = state.goals.find(g => g.id === t.targetGoalId);
+            const goalName = targetGoal ? targetGoal.title : 'Pos';
+            categoryBadge = `Tabungan (+): ${goalName}`;
+            badgeClass = 'inline-block bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-1 rounded-lg text-[10px] whitespace-nowrap font-semibold';
+          } else if (t.type === 'withdraw_from_goal' && t.targetGoalId) {
+            const targetGoal = state.goals.find(g => g.id === t.targetGoalId);
+            const goalName = targetGoal ? targetGoal.title : 'Pos';
+            categoryBadge = `Ambil Tabungan (-): ${goalName}`;
+            badgeClass = 'inline-block bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2 py-1 rounded-lg text-[10px] whitespace-nowrap font-semibold';
+          }
+
+          row.innerHTML = `
+            <td class="py-3 px-2">
+              <div class="font-semibold text-slate-200 text-xs">${t.description}</div>
+              <div class="text-[10px] text-slate-500 mt-1">${t.date || ''}</div>
+            </td>
+            <td class="py-3 px-2">
+              <span class="${badgeClass}">${categoryBadge}</span>
+            </td>
+            <td class="py-3 px-2">
+              <span class="inline-block bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded-md text-[10px] whitespace-nowrap font-medium">${t.bank || 'Cash / Tunai'}</span>
+            </td>
+            <td class="py-3 px-2 font-bold text-xs whitespace-nowrap ${color}">
+              ${prefix}${formatRupiah(t.amount)}
+            </td>
+            <td class="py-3 px-2 text-right">
+              <button onclick="deleteTransaction(${t.id})" class="w-8 h-8 rounded-lg text-slate-500 hover:text-rose-300 hover:bg-rose-400/10 transition" title="Hapus transaksi">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </td>
+          `;
           txList.appendChild(row);
         });
       }
