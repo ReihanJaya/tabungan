@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Tabungan Berdua</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
-  
   <style>
     :root {
       --bg: #eef1f6;
@@ -52,575 +51,136 @@
       --soft: #1f2a46;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 'Figtree', system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+    h1, h2, h3, .num { font-family: 'Bricolage Grotesque', 'Figtree', sans-serif; letter-spacing: -.02em; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
-    html {
-      scroll-padding-top: env(safe-area-inset-top, 0px);
-    }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px 56px; }
+    
+    header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 22px 0 8px; }
+    header h1 { font-size: 19px; margin: 0; font-weight: 700; }
+    header span { color: var(--mute); font-size: 13px; margin-left: 8px; }
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font: 400 15px/1.5 'Figtree', system-ui, sans-serif;
-      font-variant-numeric: tabular-nums;
-    }
+    .link { background: none; border: 0; padding: 4px 0; color: var(--mute); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+    .link:hover { color: var(--ink); }
+    .link.danger:hover { color: var(--neg); }
 
-    h1, h2, h3, .num {
-      font-family: 'Bricolage Grotesque', 'Figtree', sans-serif;
-      letter-spacing: -.02em;
-    }
+    .hero { padding: 34px 0 30px; border-bottom: 2px solid var(--ink); }
+    .hero p { margin: 0; color: var(--mute); font-size: 14px; }
+    .hero .big { font-size: clamp(40px, 8vw, 72px); font-weight: 800; line-height: 1; margin: 6px 0 16px; }
 
-    button {
-      font: inherit;
-      color: inherit;
-      cursor: pointer;
-    }
-
-    :focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .wrap {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 0 20px 56px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      padding: 22px 0 8px;
-    }
-
-    header h1 {
-      font-size: 19px;
-      margin: 0;
-      font-weight: 700;
-    }
-
-    header span {
-      color: var(--mute);
-      font-size: 13px;
-      margin-left: 8px;
-    }
-
-    .link {
-      background: none;
-      border: 0;
-      padding: 4px 0;
-      color: var(--mute);
-      font-size: 13px;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    .link:hover {
-      color: var(--ink);
-    }
-
-    .link.danger:hover {
-      color: var(--neg);
-    }
-
-    .hero {
-      padding: 34px 0 30px;
-      border-bottom: 2px solid var(--ink);
-    }
-
-    .hero p {
-      margin: 0;
-      color: var(--mute);
-      font-size: 14px;
-    }
-
-    .hero .big {
-      font-size: clamp(46px, 10vw, 88px);
-      font-weight: 800;
-      line-height: 1;
-      margin: 8px 0 18px;
-    }
-
-    .flow {
-      display: flex;
-      gap: 36px;
-      flex-wrap: wrap;
-      font-size: 14px;
-    }
-
-    .flow b {
-      font-weight: 700;
-      font-size: 17px;
-      display: block;
-      font-family: 'Bricolage Grotesque', sans-serif;
-    }
-
+    .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 14px; }
+    .flow b { font-weight: 700; font-size: 16px; display: block; font-family: 'Bricolage Grotesque', sans-serif; margin-top: 2px; }
     .in b { color: var(--pos); }
     .out b { color: var(--neg); }
+    .sav-box b { color: var(--accent); }
 
-    .cols {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 340px;
-      gap: 44px;
-      margin-top: 34px;
-      align-items: start;
-    }
+    .cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 44px; margin-top: 34px; align-items: start; }
+    section { margin-bottom: 44px; }
 
-    section {
-      margin-bottom: 44px;
-    }
+    .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; gap: 10px; }
+    .head h2 { margin: 0; font-size: 21px; font-weight: 700; }
+    .head small { color: var(--mute); font-size: 13px; }
 
-    .head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 16px;
-      gap: 10px;
-    }
+    /* Single Active Ticket / Goal Card */
+    .ticket { position: relative; background: var(--card); border: 1.5px solid var(--ink); border-radius: 14px; display: flex; flex-direction: column; }
+    .ticket .top { padding: 16px 16px 14px; border-bottom: 2px dashed var(--line); position: relative; }
+    .ticket .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+    .ticket h3 { margin: 0; font-size: 19px; font-weight: 700; }
+    .ticket .saved { font-size: 28px; font-weight: 800; font-family: 'Bricolage Grotesque', sans-serif; line-height: 1.1; }
+    .ticket .of { color: var(--mute); font-size: 13px; margin-top: 2px; }
+    .ticket .bot { padding: 14px 16px 12px; }
 
-    .head h2 {
-      margin: 0;
-      font-size: 21px;
-      font-weight: 700;
-    }
+    .bar { height: 10px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: var(--soft); }
+    .bar i { display: block; height: 100%; background: var(--sun); border-right: 1.5px solid var(--ink); transition: width .5s; }
+    .bar i[style*="width:0%"] { border-right: 0; }
+    
+    .tmeta { display: flex; justify-content: space-between; align-items: center; margin-top: 9px; font-size: 13px; }
+    .tmeta .acts { display: flex; gap: 12px; }
 
-    .head small {
-      color: var(--mute);
-      font-size: 13px;
-    }
+    /* Hamburger Dropdown Menu buat Target */
+    .menu-wrap { position: relative; display: inline-block; }
+    .menu-btn { background: var(--soft); border: 1.5px solid var(--ink); border-radius: 8px; padding: 6px 10px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .menu-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 6px; background: var(--card); border: 1.5px solid var(--ink); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 200px; z-index: 10; overflow: hidden; }
+    .menu-content.show { display: block; }
+    .menu-content button { width: 100%; text-align: left; padding: 10px 14px; background: none; border: 0; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 500; }
+    .menu-content button:last-child { border-bottom: 0; }
+    .menu-content button:hover { background: var(--soft); }
 
-    .tickets {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 16px;
-    }
+    .cat { display: grid; grid-template-columns: 130px 1fr 96px; gap: 12px; align-items: center; padding: 7px 0; font-size: 14px; }
+    .topcat { border-left: 6px solid var(--line); padding: 2px 0 2px 14px; margin-bottom: 16px; }
+    .topcat span { display: block; color: var(--mute); font-size: 13px; }
+    .topcat strong { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(26px, 5vw, 38px); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; }
+    .topcat em { font-style: normal; font-weight: 600; font-size: 14px; }
 
-    .ticket {
-      position: relative;
-      background: var(--card);
-      border: 1.5px solid var(--ink);
-      border-radius: 14px;
-      display: flex;
-      flex-direction: column;
-    }
+    .stack { display: flex; gap: 2px; height: 14px; border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
+    .stack i { display: block; height: 100%; }
 
-    .ticket .top {
-      padding: 16px 16px 14px;
-      border-bottom: 2px dashed var(--line);
-      position: relative;
-    }
+    .cat .t { height: 12px; background: var(--soft); border-radius: 3px; }
+    .cat .t i { display: block; height: 100%; border-radius: 3px; }
+    .cat b { font-weight: 700; text-align: right; line-height: 1.2; }
+    .cat b small { display: block; font-weight: 400; color: var(--mute); font-size: 12px; }
+    .cat .n { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .cat .n i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 
-    .ticket .top:before,
-    .ticket .top:after {
-      content: "";
-      position: absolute;
-      bottom: -9px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--bg);
-      border: 1.5px solid var(--ink);
-    }
+    .empty { color: var(--mute); font-size: 14px; padding: 6px 0; }
 
-    .ticket .top:before {
-      left: -9px;
-      clip-path: inset(0 0 0 50%);
-    }
-
-    .ticket .top:after {
-      right: -9px;
-      clip-path: inset(0 50% 0 0);
-    }
-
-    .ticket h3 {
-      margin: 0 0 10px;
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    .ticket .saved {
-      font-size: 24px;
-      font-weight: 800;
-      font-family: 'Bricolage Grotesque', sans-serif;
-      line-height: 1.1;
-    }
-
-    .ticket .of {
-      color: var(--mute);
-      font-size: 13px;
-      margin-top: 2px;
-    }
-
-    .ticket .bot {
-      padding: 14px 16px 12px;
-    }
-
-    .bar {
-      height: 10px;
-      border: 1.5px solid var(--ink);
-      border-radius: 99px;
-      overflow: hidden;
-      background: var(--soft);
-    }
-
-    .bar i {
-      display: block;
-      height: 100%;
-      background: var(--sun);
-      border-right: 1.5px solid var(--ink);
-      transition: width .5s;
-    }
-
-    .bar i[style*="width:0%"] {
-      border-right: 0;
-    }
-
-    .tmeta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 9px;
-      font-size: 13px;
-    }
-
-    .tmeta .acts {
-      display: flex;
-      gap: 12px;
-    }
-
-    .add-ticket {
-      border: 1.5px dashed var(--mute);
-      border-radius: 14px;
-      background: transparent;
-      min-height: 150px;
-      color: var(--mute);
-      font-weight: 600;
-    }
-
-    .add-ticket:hover {
-      border-color: var(--ink);
-      color: var(--ink);
-    }
-
-    .cat {
-      display: grid;
-      grid-template-columns: 130px 1fr 96px;
-      gap: 12px;
-      align-items: center;
-      padding: 7px 0;
-      font-size: 14px;
-    }
-
-    .topcat {
-      border-left: 6px solid var(--line);
-      padding: 2px 0 2px 14px;
-      margin-bottom: 16px;
-    }
-
-    .topcat span {
-      display: block;
-      color: var(--mute);
-      font-size: 13px;
-    }
-
-    .topcat strong {
-      display: block;
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: clamp(26px, 5vw, 38px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -.02em;
-    }
-
-    .topcat em {
-      font-style: normal;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .stack {
-      display: flex;
-      gap: 2px;
-      height: 14px;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 12px;
-    }
-
-    .stack i {
-      display: block;
-      height: 100%;
-    }
-
-    .cat .t {
-      height: 12px;
-      background: var(--soft);
-      border-radius: 3px;
-    }
-
-    .cat .t i {
-      display: block;
-      height: 100%;
-      border-radius: 3px;
-    }
-
-    .cat b {
-      font-weight: 700;
-      text-align: right;
-      line-height: 1.2;
-    }
-
-    .cat b small {
-      display: block;
-      font-weight: 400;
-      color: var(--mute);
-      font-size: 12px;
-    }
-
-    .cat .n {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
-
-    .cat .n i {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex: none;
-    }
-
-    .empty {
-      color: var(--mute);
-      font-size: 14px;
-      padding: 6px 0;
-    }
-
-    .tx {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 2px 14px;
-      padding: 13px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .tx:first-child {
-      border-top: 2px solid var(--ink);
-    }
-
-    .tx .d {
-      grid-column: 1;
-      margin-top: 4px;
-      font-weight: 500;
-    }
-
-    .tx .m {
-      color: var(--mute);
-      font-size: 13px;
-      grid-column: 1/-1;
-    }
-
-    .tx .a {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-weight: 700;
-      text-align: right;
-    }
-
-    .tx .c {
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
-
-    .tx .c i {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex: none;
-    }
-
-    .tx .del {
-      grid-column: 2;
-      justify-self: end;
-      align-self: end;
-      font-size: 12px;
-    }
+    .tx { display: grid; grid-template-columns: 1fr auto; gap: 2px 14px; padding: 13px 0; border-top: 1px solid var(--line); }
+    .tx:first-child { border-top: 2px solid var(--ink); }
+    .tx .d { grid-column: 1; margin-top: 4px; font-weight: 500; }
+    .tx .m { color: var(--mute); font-size: 13px; grid-column: 1/-1; }
+    .tx .a { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; text-align: right; }
+    .tx .c { font-weight: 700; display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .tx .c i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+    .tx .del { grid-column: 2; justify-self: end; align-self: end; font-size: 12px; }
 
     .pos { color: var(--pos); }
     .neg { color: var(--neg); }
 
-    .panel {
-      background: var(--card);
-      border: 1.5px solid var(--ink);
-      border-radius: 6px;
-      padding: 22px 20px;
-      position: sticky;
-      top: calc(env(safe-area-inset-top, 0px) + 16px);
-    }
+    .panel { background: var(--card); border: 1.5px solid var(--ink); border-radius: 6px; padding: 22px 20px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+    .panel h2 { margin: 0 0 16px; font-size: 21px; }
 
-    .panel h2 {
-      margin: 0 0 16px;
-      font-size: 21px;
-    }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; }
+    .seg button { border: 1.5px solid var(--line); background: transparent; border-radius: 8px; padding: 9px 6px; font-size: 13px; font-weight: 600; color: var(--mute); }
+    .seg button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--bg); }
 
-    .seg {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
+    label { display: block; font-size: 13px; font-weight: 600; margin: 0 0 5px; }
+    .f { margin-bottom: 14px; }
+    .in-f, select.in-f { width: 100%; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 10px 12px; font: inherit; }
+    .in-f:focus { border-color: var(--accent); outline: none; }
 
-    .seg button {
-      border: 1.5px solid var(--line);
-      background: transparent;
-      border-radius: 8px;
-      padding: 9px 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--mute);
-    }
+    .rp { position: relative; }
+    .rp span { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--mute); }
+    .rp input { padding-left: 38px; font-weight: 700; font-size: 17px; }
 
-    .seg button[aria-pressed="true"] {
-      border-color: var(--ink);
-      background: var(--ink);
-      color: var(--bg);
-    }
+    .go { width: 100%; border: 0; background: var(--accent); color: var(--accent-ink); font-weight: 700; padding: 12px; border-radius: 8px; font-size: 15px; }
+    .go:hover { filter: brightness(1.08); }
 
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin: 0 0 5px;
-    }
+    .err { color: var(--neg); font-size: 13px; margin: 0 0 10px; min-height: 0; }
 
-    .f {
-      margin-bottom: 14px;
-    }
+    dialog { border: 1.5px solid var(--ink); border-radius: 12px; background: var(--card); color: var(--ink); padding: 22px; width: min(380px, 92vw); }
+    dialog::backdrop { background: rgba(10, 15, 30, .55); }
+    dialog h3 { margin: 0 0 14px; font-size: 18px; }
+    dialog p { margin: 0 0 16px; }
 
-    .in-f, select.in-f {
-      width: 100%;
-      border: 1.5px solid var(--line);
-      background: var(--bg);
-      color: var(--ink);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font: inherit;
-    }
-
-    .in-f:focus {
-      border-color: var(--accent);
-      outline: none;
-    }
-
-    .rp {
-      position: relative;
-    }
-
-    .rp span {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-weight: 700;
-      color: var(--mute);
-    }
-
-    .rp input {
-      padding-left: 38px;
-      font-weight: 700;
-      font-size: 17px;
-    }
-
-    .go {
-      width: 100%;
-      border: 0;
-      background: var(--accent);
-      color: var(--accent-ink);
-      font-weight: 700;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    .go:hover {
-      filter: brightness(1.08);
-    }
-
-    .err {
-      color: var(--neg);
-      font-size: 13px;
-      margin: 0 0 10px;
-      min-height: 0;
-    }
-
-    dialog {
-      border: 1.5px solid var(--ink);
-      border-radius: 12px;
-      background: var(--card);
-      color: var(--ink);
-      padding: 22px;
-      width: min(380px, 92vw);
-    }
-
-    dialog::backdrop {
-      background: rgba(10, 15, 30, .55);
-    }
-
-    dialog h3 {
-      margin: 0 0 14px;
-      font-size: 18px;
-    }
-
-    dialog p {
-      margin: 0 0 16px;
-    }
-
-    .row {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      margin-top: 18px;
-    }
-
-    .row button {
-      border: 1.5px solid var(--ink);
-      background: transparent;
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-weight: 600;
-    }
-
-    .row .y {
-      background: var(--ink);
-      color: var(--bg);
-    }
+    .row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+    .row button { border: 1.5px solid var(--ink); background: transparent; border-radius: 8px; padding: 8px 16px; font-weight: 600; }
+    .row .y { background: var(--ink); color: var(--bg); }
 
     @media (max-width: 860px) {
-      .cols {
-        grid-template-columns: 1fr;
-        gap: 0;
-      }
-      .panel {
-        position: static;
-        order: -1;
-        margin-bottom: 40px;
-      }
-      .cat {
-        grid-template-columns: 90px 1fr auto;
-      }
+      .cols { grid-template-columns: 1fr; gap: 0; }
+      .panel { position: static; order: -1; margin-bottom: 40px; }
+      .cat { grid-template-columns: 90px 1fr auto; }
     }
   </style>
 </head>
 <body>
+
   <div class="wrap">
+    <!-- Header -->
     <header>
       <div>
         <h1 style="display:inline">Syarifa &amp; Reihan</h1>
@@ -629,25 +189,43 @@
       <button class="link danger" onclick="resetAll()">Reset data</button>
     </header>
 
+    <!-- Hero / Dashboard Section -->
     <div class="hero">
-      <p>Sisa saldo kalian berdua</p>
+      <p>Total keseluruhan saldo kalian berdua</p>
       <div class="big num" id="balance">Rp 0</div>
       <div class="flow">
-        <div class="in"><span>Total masuk</span><b id="inc">Rp 0</b></div>
-        <div class="out"><span>Total keluar</span><b id="exp">Rp 0</b></div>
+        <div class="in">
+          <span>Total Masuk</span>
+          <b id="inc">Rp 0</b>
+        </div>
+        <div class="out">
+          <span>Total Keluar</span>
+          <b id="exp">Rp 0</b>
+        </div>
+        <div class="sav-box">
+          <span>Uang Masuk Tabungan</span>
+          <b id="totalSavedAll">Rp 0</b>
+        </div>
+        <div>
+          <span>Uang Bebas (Diluar Tabungan)</span>
+          <b id="freeMoney">Rp 0</b>
+        </div>
       </div>
     </div>
 
+    <!-- Main Content Grid -->
     <div class="cols">
       <div>
+        <!-- Target Tabungan Aktif -->
         <section style="margin-top:0">
           <div class="head">
-            <h2>Tujuan tabungan</h2>
+            <h2>Target tabungan aktif</h2>
             <small id="today"></small>
           </div>
-          <div class="tickets" id="goals"></div>
+          <div id="activeGoalContainer"></div>
         </section>
 
+        <!-- Analisis Pengeluaran -->
         <section>
           <div class="head">
             <h2>Uang keluar buat apa</h2>
@@ -655,6 +233,7 @@
           <div id="cats"></div>
         </section>
 
+        <!-- Riwayat Transaksi -->
         <section>
           <div class="head">
             <h2>Riwayat</h2>
@@ -664,6 +243,7 @@
         </section>
       </div>
 
+      <!-- Sidebar Form Input -->
       <aside class="panel">
         <h2>Catat transaksi</h2>
         <div class="seg" id="seg" role="group" aria-label="Jenis transaksi"></div>
@@ -672,12 +252,12 @@
           <label for="category">Kategori</label>
           <select id="category" class="in-f"></select>
         </div>
-
+        
         <div class="f" id="goalWrap" hidden>
           <label for="goalId">Tujuan tabungan</label>
           <select id="goalId" class="in-f"></select>
         </div>
-
+        
         <div class="f">
           <label for="bank">Bank / dompet</label>
           <select id="bank" class="in-f">
@@ -693,7 +273,7 @@
             <option>Lainnya</option>
           </select>
         </div>
-
+        
         <div class="f">
           <label for="an">Atas nama (A.n)</label>
           <input id="an" class="in-f" list="anList" maxlength="40" placeholder="Nama pemilik rekening / dompet">
@@ -702,7 +282,7 @@
             <option value="Reihan">
           </datalist>
         </div>
-
+        
         <div class="f">
           <label for="amount">Nominal</label>
           <div class="rp">
@@ -710,18 +290,19 @@
             <input id="amount" class="in-f" inputmode="numeric" autocomplete="off" placeholder="25.000">
           </div>
         </div>
-
+        
         <div class="f">
-          <label for="desc">Catatan</label>
+          <label for="desc">Catatan <span style="font-weight:400;color:var(--mute)">(Opsional)</span></label>
           <input id="desc" class="in-f" maxlength="100" placeholder="Misal: nabung mingguan">
         </div>
-
+        
         <p class="err" id="err" role="alert"></p>
         <button class="go" onclick="addTx()">Simpan transaksi</button>
       </aside>
     </div>
   </div>
 
+  <!-- Dialog Ubah/Tambah Tujuan -->
   <dialog id="goalDlg">
     <h3 id="goalDlgTitle">Tujuan baru</h3>
     <div class="f">
@@ -742,6 +323,7 @@
     </div>
   </dialog>
 
+  <!-- Dialog Konfirmasi -->
   <dialog id="askDlg">
     <h3>Yakin?</h3>
     <p id="askText"></p>
@@ -751,8 +333,9 @@
     </div>
   </dialog>
 
+  <!-- JavaScript Logic -->
   <script>
-    const KEY = 'moneyTrackerState_v4';
+    const KEY = 'moneyTrackerState_v6';
     const defGoals = () => [
       { id: 'goal-1', title: 'Buat Healing', target: 1500000 },
       { id: 'goal-2', title: 'Beli Kado', target: 500000 },
@@ -769,6 +352,7 @@
     if (!state || typeof state !== 'object') state = {};
     if (!Array.isArray(state.goals) || !state.goals.length) state.goals = defGoals();
     if (!Array.isArray(state.transactions)) state.transactions = [];
+    if (!state.activeGoalId) state.activeGoalId = state.goals[0].id;
 
     function save() {
       try {
@@ -839,12 +423,19 @@
     }
 
     function addTx() {
-      const amount = num($('amount').value), description = $('desc').value.trim(), an =$('an').value.trim();
+      const amount = num($('amount').value), an =$('an').value.trim();
+      let description = $('desc').value.trim();
+      
       if (!amount) { $('err').textContent = 'Isi nominal lebih dari Rp 0.'; return; }
       if (!an) { $('err').textContent = 'Isi atas nama (A.n) rekening atau dompetnya.'; return; }
-      if (!description) { $('err').textContent = 'Isi catatan singkat dulu.'; return; }$('err').textContent = '';
       
+      if (!description) {
+        description = type === 'income' ? $('category').value : (type === 'expense' ?$('category').value : 'Tabungan');
+      }
+
+      $('err').textContent = '';
       const g = type === 'save_to_goal' || type === 'withdraw_from_goal';
+      
       state.transactions.unshift({
         id: Date.now(),
         type,
@@ -873,10 +464,32 @@
 
     function resetAll() {
       ask('Semua tujuan dan transaksi akan dihapus dan dikembalikan ke awal.', () => {
-        state = { transactions: [], goals: defGoals() };
+        state = { transactions: [], goals: defGoals(), activeGoalId: defGoals()[0].id };
         save();
         buildSeg();
       });
+    }
+
+    function toggleGoalMenu() {
+      const menu = $('goalMenuContent');
+      menu.classList.toggle('show');
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.closest('.menu-wrap')) {
+        const menus = document.getElementsByClassName('menu-content');
+        for (let i = 0; i < menus.length; i++) {
+          let openMenu = menus[i];
+          if (openMenu.classList.contains('show')) {
+            openMenu.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    function setActiveGoal(id) {
+      state.activeGoalId = id;
+      save();
     }
 
     function openGoal(id) {
@@ -893,25 +506,29 @@
     function saveGoal() {
       const title = $('gName').value.trim(), target = num($('gTarget').value);
       if (!title || !target) { $('gErr').textContent = 'Isi nama dan target lebih dari Rp 0.'; return; }
+      
       if (editingId) {
         const g = state.goals.find(x => x.id === editingId);
         if (g) { g.title = title; g.target = target; }
       } else {
-        state.goals.push({ id: 'goal-' + Date.now(), title, target });
+        const newId = 'goal-' + Date.now();
+        state.goals.push({ id: newId, title, target });
+        state.activeGoalId = newId;
       }
+      
       goalDlg.close();
       save();
       buildSeg();
     }
 
     function delGoal(id) {
-      if (state.goals.length <= 1) {
-        ask('Minimal harus ada satu tujuan tabungan.', () => {});
-        return;
-      }
+      if (state.goals.length <= 1) { ask('Minimal harus ada satu tujuan tabungan.', () => {}); return; }
       const g = state.goals.find(x => x.id === id);
       ask(`Hapus tujuan "${g.title}"? Riwayat transaksinya tetap ada.`, () => {
         state.goals = state.goals.filter(x => x.id !== id);
+        if (state.activeGoalId === id) {
+          state.activeGoalId = state.goals[0].id;
+        }
         save();
         buildSeg();
       });
@@ -920,6 +537,7 @@
     function render() {
       let inc = 0, exp = 0;
       const cat = {}, saved = {};
+      
       state.goals.forEach(g => saved[g.id] = 0);
       
       state.transactions.forEach(t => {
@@ -933,51 +551,74 @@
         if (t.type === 'withdraw_from_goal' && t.targetGoalId) saved[t.targetGoalId] = Math.max(0, (saved[t.targetGoalId] || 0) - a);
       });
 
-      $('balance').textContent = rp(inc - exp);
-      $('inc').textContent = rp(inc);$('exp').textContent = rp(exp);
+      const totalBalance = inc - exp;
+      let totalSavedAll = 0;
+      Object.values(saved).forEach(val => totalSavedAll += val);
+      const freeMoney = totalBalance - totalSavedAll;
 
-      $('goals').innerHTML = state.goals.map(g => {
-        const s = saved[g.id] || 0, p = Math.min(100, Math.round(s / g.target * 100)) || 0;
-        return `
-          <div class="ticket">
-            <div class="top">
-              <h3>${esc(g.title)}</h3>
-              <div class="saved">${rp(s)}</div>
-              <div class="of">dari ${rp(g.target)}</div>
-            </div>
-            <div class="bot">
-              <div class="bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100">
-                <i style="width:${p}%"></i>
+      $('balance').textContent = rp(totalBalance);
+      $('inc').textContent = rp(inc);$('exp').textContent = rp(exp);
+      $('totalSavedAll').textContent = rp(totalSavedAll);$('freeMoney').textContent = rp(freeMoney);
+
+      let activeGoal = state.goals.find(g => g.id === state.activeGoalId);
+      if (!activeGoal) {
+        activeGoal = state.goals[0];
+        state.activeGoalId = activeGoal.id;
+      }
+
+      const s = saved[activeGoal.id] || 0;
+      const p = Math.min(100, Math.round(s / activeGoal.target * 100)) || 0;
+
+      $('activeGoalContainer').innerHTML = `
+        <div class="ticket">
+          <div class="top">
+            <div class="top-row">
+              <div>
+                <div class="of" style="margin-bottom:2px; font-weight:600; color:var(--accent);">Pilihan Tujuan Aktif</div>
+                <h3>${esc(activeGoal.title)}</h3>
               </div>
-              <div class="tmeta">
-                <b>${p}%</b>
-                <span class="acts">
-                  <button class="link" onclick="openGoal('${esc(g.id)}')">Ubah</button>
-                  <button class="link danger" onclick="delGoal('${esc(g.id)}')">Hapus</button>
-                </span>
+              <div class="menu-wrap">
+                <button class="menu-btn" onclick="toggleGoalMenu()">
+                  <span>☰ Pilih / Atur</span>
+                </button>
+                <div id="goalMenuContent" class="menu-content">
+                  ${state.goals.map(g => `<button onclick="setActiveGoal('${g.id}')">${esc(g.title)}${g.id === state.activeGoalId ? '✓' : ''}</button>`).join('')}
+                  <button onclick="openGoal()" style="border-top:1px solid var(--line); font-weight:600; color:var(--accent);">+ Tambah Tujuan Baru</button>
+                </div>
               </div>
             </div>
-          </div>`;
-      }).join('') + `<button class="add-ticket" onclick="openGoal()">+ Tujuan baru</button>`;
+            <div class="saved">${rp(s)}</div>
+            <div class="of">dari ${rp(activeGoal.target)}</div>
+          </div>
+          <div class="bot">
+            <div class="bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100">
+              <i style="width:${p}%"></i>
+            </div>
+            <div class="tmeta">
+              <b>${p}%</b>
+              <span class="acts">
+                <button class="link" onclick="openGoal('${esc(activeGoal.id)}')">Ubah</button>
+                <button class="link danger" onclick="delGoal('${esc(activeGoal.id)}')">Hapus</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
 
       const rows = Object.entries(cat).sort((a, b) => b[1] - a[1]);
       $('cats').innerHTML = rows.length ? (() => {
         const T = rows.reduce((s, r) => s + r[1], 0), P = v => Math.round(v / T * 100);
-        return `
-          <div class="topcat" style="border-color:${colOf(rows[0][0])}">
-            <span>Paling banyak dipakai buat</span>
-            <strong>${esc(rows[0][0])}</strong>
-            <em>${P(rows[0][1])}% dari total pengeluaran, ${rp(rows[0][1])}</em>
-          </div>
-          <div class="stack">
-            ${rows.map(([k, v]) => `<i title="${esc(k)}" style="width:${v / T * 100}\%;background:${colOf(k)}"></i>`).join('')}
-          </div>
-          ${rows.map(([k, v]) => `
-            <div class="cat">
-              <span class="n"><i style="background:${colOf(k)}"></i>${esc(k)}</span>
-              <div class="t"><i style="width:${v / T * 100}\%;background:${colOf(k)}"></i></div>
-              <b>${P(v)}\%<small>${rp(v)}</small></b>
-            </div>`).join('')}`;
+        return `<div class="topcat" style="border-color:${colOf(rows[0][0])}">
+                  <span>Paling banyak dipakai buat</span>
+                  <strong>${esc(rows[0][0])}</strong>
+                  <em>${P(rows[0][1])}% dari total pengeluaran, ${rp(rows[0][1])}</em>
+                </div>` +
+                `<div class="stack">${rows.map(([k, v]) => `<i title="${esc(k)}" style="width:${v / T * 100}\%;background:${colOf(k)}"></i>`).join('')}</div>` +
+                rows.map(([k, v]) => `<div class="cat">
+                  <span class="n"><i style="background:${colOf(k)}"></i>${esc(k)}</span>
+                  <div class="t"><i style="width:${v / T * 100}%;background:${colOf(k)}"></i></div>
+                  <b>${P(v)}%<small>${rp(v)}</small></b>
+                </div>`).join('');
       })() : '<p class="empty">Belum ada pengeluaran tercatat.</p>';
 
       $('count').textContent = `${state.transactions.length} catatan`;
@@ -993,14 +634,13 @@
         const ownerName = esc(t.an || 'Syarifa / Reihan');
         const metaInfo = `${bankName} a.n. ${ownerName}, ${esc(t.date || '')}`;
 
-        return `
-          <div class="tx">
-            <span class="c"><i style="background:${dotColor(t)}"></i>${esc(label)}</span>
-            <span class="a ${plus ? 'pos' : 'neg'}">${plus ? '+' : '−'}${rp(t.amount)}</span>
-            <span class="m">${metaInfo}</span>
-            <span class="d">${esc(t.description)}</span>
-            <button class="link del danger" onclick="delTx(${Number(t.id)})">Hapus</button>
-          </div>`;
+        return `<div class="tx">
+                  <span class="c"><i style="background:${dotColor(t)}"></i>${esc(label)}</span>
+                  <span class="a ${plus ? 'pos' : 'neg'}">${plus ? '+' : '−'}${rp(t.amount)}</span>
+                  <span class="m">${metaInfo}</span>
+                  <span class="d">${esc(t.description)}</span>
+                  <button class="link del danger" onclick="delTx(${Number(t.id)})">Hapus</button>
+                </div>`;
       }).join('') : '<p class="empty">Belum ada transaksi. Catat yang pertama lewat formulir.</p>';
     }
 
